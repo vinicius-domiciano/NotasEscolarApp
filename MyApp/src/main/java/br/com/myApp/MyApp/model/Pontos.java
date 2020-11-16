@@ -1,9 +1,11 @@
 package br.com.myApp.MyApp.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -12,23 +14,52 @@ public class Pontos {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id_ponto;
-	private double pontuação;
+	@Column(name = "id_ponto")
+	private Long idPonto;
+	private double pontuacao;
 
-	public Long getId_ponto() {
-		return id_ponto;
+//	Relacionando com tabela Notas
+	@ManyToOne
+	private Notas nota;
+
+//	Relacionando com tabela Materia
+	@ManyToOne
+	private Materia materia;
+
+	/*
+	 * Getters e setters
+	 */
+
+	public Long getIdPonto() {
+		return idPonto;
 	}
 
-	public void setId_ponto(Long id_ponto) {
-		this.id_ponto = id_ponto;
+	public void setIdPonto(Long idPonto) {
+		this.idPonto = idPonto;
 	}
 
-	public double getPontuação() {
-		return pontuação;
+	public double getPontuacao() {
+		return pontuacao;
 	}
 
-	public void setPontuação(double pontuação) {
-		this.pontuação = pontuação;
+	public void setPontuacao(double pontuacao) {
+		this.pontuacao = pontuacao;
+	}
+
+	public Notas getNota() {
+		return nota;
+	}
+
+	public void setNota(Notas nota) {
+		this.nota = nota;
+	}
+
+	public Materia getMateria() {
+		return materia;
+	}
+
+	public void setMateria(Materia materia) {
+		this.materia = materia;
 	}
 
 }

@@ -50,7 +50,7 @@ public class MateriaResource {
 	
 	@PutMapping("/materias")
 	public ResponseEntity<?> atualizarMateria(@Valid @RequestBody Materia materia) {
-		if (materiaRepository.findById(materia.getId_materia()).isPresent())
+		if (materiaRepository.findById(materia.getIdMateria()).isPresent())
 			return ResponseEntity.ok(materiaRepository.save(materia));
 		
 		return ResponseEntity.notFound().build();

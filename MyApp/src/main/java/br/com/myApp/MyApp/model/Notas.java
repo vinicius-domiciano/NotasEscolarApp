@@ -1,9 +1,16 @@
 package br.com.myApp.MyApp.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -12,16 +19,29 @@ public class Notas {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id_nota;
+	@Column(name = "id_nota")
+	private Long idNota;
 	private int ano;
 	private int bimestre;
 
-	public Long getId_nota() {
-		return id_nota;
+//	Relacionando com tabela Aluno
+	@ManyToOne
+	private Aluno aluno;
+	
+//	Relacionando com tabela Pontos
+	@OneToMany(mappedBy = "nota", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Pontos> pontos = new ArrayList<Pontos>();
+
+	/*
+	 *Getters e setters
+	*/
+	
+	public Long getIdNota() {
+		return idNota;
 	}
 
-	public void setId_nota(Long id_nota) {
-		this.id_nota = id_nota;
+	public void setIdNota(Long idNota) {
+		this.idNota = idNota;
 	}
 
 	public int getAno() {
@@ -40,4 +60,26 @@ public class Notas {
 		this.bimestre = bimestre;
 	}
 
+	public Aluno getAluno() {
+		return aluno;
+	}
+
+	public void setAluno(Aluno aluno) {
+		this.aluno = aluno;
+	}
+	
+	/*
+	 * metodos de adicionação/remoção de tabelas relacionadas 
+	*/
+
+	public void addPontos (Pontos ponto) {
+		pontos.add(ponto);
+		ponto.setNota(this);
+	}
+	
+	public void removePontos (Pontos ponto) {
+		pontos.remove(ponto);
+		ponto.setNota(null);
+	}
+	
 }
