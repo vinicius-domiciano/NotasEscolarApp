@@ -1,47 +1,63 @@
 package br.com.myApp.MyApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.*;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
+import javax.persistence.*;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
+import javax.persistence.ForeignKey;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_professor")
 public class Professor {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_professor")
-	private Long idProfessor;
+	@GeneratedValue(generator = "uuid4")
+	@GenericGenerator(name = "UUID", strategy = "uuid4")
+	@Type(type = "org.hibernate.type.UUIDCharType")
+	@Column(name = "id_professor", columnDefinition = "CHAR(36)")
+	private UUID idProfessor;
+
+	@NotNull
 	private String nome;
+
+	@NotNull
+	@NaturalId
+	@Column(unique = true)
 	private String email;
+
+	@NotNull
 	private String senha;
 
 	// Relacionando com tabela Materia
-	@ManyToOne
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_materia", foreignKey = @ForeignKey(name = "MATERIA_ID_FK"))
 	private Materia materia;
 
 	// Relacionando com tabela Alunos
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	private List<Aluno> alunos = new ArrayList<Aluno>();
+	@NotNull
+	@JsonIgnore
+	@ManyToMany(mappedBy = "professores")
+	private List<Aluno> alunos = new ArrayList<>();
 
 	/*
 	 * Getters e setters
 	 */
 
-	public Long getIdProfessor() {
+	public UUID getIdProfessor() {
 		return idProfessor;
 	}
 
-	public void setIdProfessor(Long idProfessor) {
+	public void setIdProfessor(UUID idProfessor) {
 		this.idProfessor = idProfessor;
 	}
 
@@ -77,7 +93,15 @@ public class Professor {
 		this.materia = materia;
 	}
 
-	/*
+    public List<Aluno> getAlunos() {
+        return alunos;
+    }
+
+    public void setAlunos(List<Aluno> alunos) {
+        this.alunos = alunos;
+    }
+
+    /*
 	 * metodos de adicionação/remoção de tabelas relacionadas
 	 */
 
@@ -90,5 +114,4 @@ public class Professor {
 		alunos.remove(aluno);
 		aluno.getProfessores().remove(this);
 	}
-
 }

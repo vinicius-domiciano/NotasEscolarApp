@@ -2,7 +2,9 @@ package br.com.myApp.MyApp.resource;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
+import org.hibernate.type.UUIDCharType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,21 +16,22 @@ import br.com.myApp.MyApp.model.Aluno;
 import br.com.myApp.MyApp.repository.AlunoRepository;
 
 @RestController
-@RequestMapping("/escola")
+@RequestMapping("/escola/alunos")
 public class AlunoResource {
 
 	@Autowired
 	private AlunoRepository alunoRepository;
 	
 //	Listando todos os alunos
-	@GetMapping("/alunos")
+	@GetMapping("")
 	public List<Aluno> getAlunos() {
 		return alunoRepository.findAll();
 	}
 	
 //	Buscando um aluno
-	@GetMapping("alunos/{idAluno}")
-	public ResponseEntity<?> getAluno(@PathVariable Long idAluno) {
+	@GetMapping("/{idAluno}")
+	public ResponseEntity<?> getAluno(@PathVariable UUID idAluno) {
+
 		Optional<Aluno> aluno = alunoRepository.findById(idAluno);
 		return aluno.isPresent() ?
 				ResponseEntity.ok(aluno.get()) :

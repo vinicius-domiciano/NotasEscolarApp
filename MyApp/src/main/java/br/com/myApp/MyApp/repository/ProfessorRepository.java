@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.myApp.MyApp.model.Professor;
 
-public interface ProfessorRepository extends JpaRepository<Professor, Long> {
+import java.util.UUID;
+
+public interface ProfessorRepository extends JpaRepository<Professor, UUID> {
 
 }

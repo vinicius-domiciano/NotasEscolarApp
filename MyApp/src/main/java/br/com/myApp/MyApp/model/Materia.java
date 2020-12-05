@@ -1,7 +1,14 @@
 package br.com.myApp.MyApp.model;
 
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Parameter;
+import org.hibernate.annotations.Type;
+import org.hibernate.id.UUIDGenerator;
+import org.springframework.beans.propertyeditors.UUIDEditor;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -11,34 +18,31 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "tbl_materia")
 public class Materia {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_materia")
-	private Long idMateria;
+	@GeneratedValue(generator = "uuid4")
+	@GenericGenerator(name = "UUID", strategy = "uuid4")
+	@Type(type = "org.hibernate.type.UUIDCharType")
+	@Column(name = "id_materia", columnDefinition = "CHAR(36)")
+	private UUID idMateria;
+
+	@NotNull
 	private String materia;
-	
-//	Relacionando com a tabela Professor 
-	@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Professor> professores = new ArrayList<Professor>();
-	
-//	Relacionando com a tabela Pontos
-	@OneToMany(mappedBy = "materia", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Pontos> pontos = new ArrayList<Pontos>();
 
 	/*
 	 *Getters e setters
 	*/
-	
-	public Long getIdMateria() {
+
+	public UUID getIdMateria() {
 		return idMateria;
 	}
 
-	public void setIdMateria(Long idMateria) {
+	public void setIdMateria(UUID idMateria) {
 		this.idMateria = idMateria;
 	}
 
@@ -48,30 +52,6 @@ public class Materia {
 
 	public void setMateria(String materia) {
 		this.materia = materia;
-	}
-	
-	/*
-	 * metodos de adicionação/remoção de tabelas relacionadas 
-	*/
-	
-	public void addPontos (Pontos ponto) {
-		pontos.add(ponto);
-		ponto.setMateria(this);
-	}
-	
-	public void removePontos (Pontos ponto) {
-		pontos.remove(ponto);
-		ponto.setMateria(null);
-	}
-	
-	public void addProfessor (Professor professor) {
-		professores.add(professor);
-		professor.setMateria(this);
-	}
-	
-	public void removeProfessor (Professor professor) {
-		professores.remove(professor);
-		professor.setMateria(null);
 	}
 	
 

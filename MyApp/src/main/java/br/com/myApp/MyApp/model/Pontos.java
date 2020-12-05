@@ -1,40 +1,48 @@
 package br.com.myApp.MyApp.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import java.util.UUID;
 
 @Entity
 @Table(name = "tbl_pontos")
 public class Pontos {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_ponto")
-	private Long idPonto;
+	@GeneratedValue(generator = "uuid4")
+	@GenericGenerator(name = "UUID", strategy = "uuid4")
+	@Type(type = "org.hibernate.type.UUIDCharType")
+	@Column(name = "id_ponto", columnDefinition = "CHAR(36)")
+	private UUID idPonto;
+
+	@NotNull
 	private double pontuacao;
 
 //	Relacionando com tabela Notas
-	@ManyToOne
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_nota", foreignKey = @ForeignKey(name = "NOTA_ID_FK"))
 	private Notas nota;
 
 //	Relacionando com tabela Materia
-	@ManyToOne
+	@NotNull
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_materia", foreignKey = @ForeignKey(name = "MATERIA_ID_FK"))
 	private Materia materia;
 
 	/*
 	 * Getters e setters
 	 */
 
-	public Long getIdPonto() {
+	public UUID getIdPonto() {
 		return idPonto;
 	}
 
-	public void setIdPonto(Long idPonto) {
+	public void setIdPonto(UUID idPonto) {
 		this.idPonto = idPonto;
 	}
 

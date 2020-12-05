@@ -1,49 +1,70 @@
 package br.com.myApp.MyApp.model;
 
+import br.com.myApp.MyApp.model.enumerations.SerieEnum;
+import br.com.myApp.MyApp.model.enumerations.TurmaEnum;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Type;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-@Entity
+@Entity(name = "Aluno")
 @Table(name = "tbl_aluno")
 public class Aluno {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_aluno")
-	private Long idAluno;
+	@GeneratedValue(generator = "uuid4")
+	@GenericGenerator(name = "UUID", strategy = "uuid4")
+	@Type(type = "org.hibernate.type.UUIDCharType")
+	@Column(name = "id_aluno", columnDefinition = "CHAR(36)")
+	private UUID idAluno;
 
+	@NotNull
 	private String nome;
+
+	@NotNull
+	@NaturalId
+	@Column(unique = true)
 	private String ra;
+
+	@NotNull
 	private String senha;
-	private String serie;
+
+	@Enumerated(EnumType.ORDINAL)
+	private SerieEnum serie;
+
+	@Enumerated(EnumType.ORDINAL)
+	private TurmaEnum turma;
 
 //	Relacionando com tabela Notas
 	@OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Notas> notas = new ArrayList<Notas>();
 	
-//	Relacionando com tabela Professor
-	@ManyToMany(mappedBy = "alunos")
+//	Relacionando com tabela Professores
+	@NotNull
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumns({
+			@JoinColumn(name="id_aluno", referencedColumnName="id_aluno"),
+			@JoinColumn(name="id_professor", referencedColumnName="id_professor")
+	})
 	private List<Professor> professores = new ArrayList<>();
 
 	/*
 	 *Getters e setters
 	*/
-	
-	public Long getIdAluno() {
+
+	public UUID getIdAluno() {
 		return idAluno;
 	}
 
-	public void setIdAluno(Long idAluno) {
+	public void setIdAluno(UUID idAluno) {
 		this.idAluno = idAluno;
 	}
 
@@ -71,12 +92,20 @@ public class Aluno {
 		this.senha = senha;
 	}
 
-	public String getSerie() {
+	public SerieEnum getSerie() {
 		return serie;
 	}
 
-	public void setSerie(String serie) {
+	public void setSerie(SerieEnum serie) {
 		this.serie = serie;
+	}
+
+	public TurmaEnum getTurma() {
+		return turma;
+	}
+
+	public void setTurma(TurmaEnum turma) {
+		this.turma = turma;
 	}
 
 	public List<Professor> getProfessores() {
@@ -86,7 +115,15 @@ public class Aluno {
 	public void setProfessores(List<Professor> professores) {
 		this.professores = professores;
 	}
-	
+
+	public List<Notas> getNotas() {
+		return notas;
+	}
+
+	public void setNotas(List<Notas> notas) {
+		this.notas = notas;
+	}
+
 	/*
 	 * metodos de adicionação/remoção de tabelas relacionadas 
 	*/
@@ -95,10 +132,20 @@ public class Aluno {
 		notas.add(nota);
 		nota.setAluno(this);
 	}
-	
+
 	public void removeNotas (Notas nota) {
 		notas.remove(nota);
 		nota.setAluno(null);
+	}
+
+	public void addProfessor(Professor professor) {
+		professores.add(professor);
+		professor.getAlunos().add(this);
+	}
+
+	public void removeProfessor(Professor professor) {
+		professores.remove(professor);
+		professor.getAlunos().remove(this);
 	}
 
 }

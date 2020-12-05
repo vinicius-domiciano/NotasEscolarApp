@@ -1,31 +1,43 @@
 package br.com.myApp.MyApp.model;
 
+import br.com.myApp.MyApp.model.enumerations.BimestreEnum;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.NaturalId;
+import org.hibernate.annotations.Type;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
-@Entity
+@Entity(name = "Notas")
 @Table(name = "tbl_notas")
 public class Notas {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id_nota")
-	private Long idNota;
+	@GeneratedValue(generator = "uuid4")
+	@GenericGenerator(name = "UUID", strategy = "uuid4")
+	@Type(type = "org.hibernate.type.UUIDCharType")
+	@Column(name = "id_nota", columnDefinition = "CHAR(36)")
+	private UUID idNota;
+
 	private int ano;
-	private int bimestre;
+
+	@NotNull
+	@Enumerated(EnumType.ORDINAL)
+	private BimestreEnum bimestre;
 
 //	Relacionando com tabela Aluno
-	@ManyToOne
+	@NotNull
+	@JsonIgnore
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_aluno", foreignKey = @ForeignKey(name = "ALUNO_ID_FK"))
 	private Aluno aluno;
 	
 //	Relacionando com tabela Pontos
@@ -35,12 +47,12 @@ public class Notas {
 	/*
 	 *Getters e setters
 	*/
-	
-	public Long getIdNota() {
+
+	public UUID getIdNota() {
 		return idNota;
 	}
 
-	public void setIdNota(Long idNota) {
+	public void setIdNota(UUID idNota) {
 		this.idNota = idNota;
 	}
 
@@ -52,12 +64,20 @@ public class Notas {
 		this.ano = ano;
 	}
 
-	public int getBimestre() {
+	public BimestreEnum getBimestre() {
 		return bimestre;
 	}
 
-	public void setBimestre(int bimestre) {
+	public void setBimestre(BimestreEnum bimestre) {
 		this.bimestre = bimestre;
+	}
+
+	public List<Pontos> getPontos() {
+		return pontos;
+	}
+
+	public void setPontos(List<Pontos> pontos) {
+		this.pontos = pontos;
 	}
 
 	public Aluno getAluno() {
@@ -67,7 +87,7 @@ public class Notas {
 	public void setAluno(Aluno aluno) {
 		this.aluno = aluno;
 	}
-	
+
 	/*
 	 * metodos de adicionação/remoção de tabelas relacionadas 
 	*/
@@ -76,10 +96,9 @@ public class Notas {
 		pontos.add(ponto);
 		ponto.setNota(this);
 	}
-	
+
 	public void removePontos (Pontos ponto) {
 		pontos.remove(ponto);
 		ponto.setNota(null);
 	}
-	
 }

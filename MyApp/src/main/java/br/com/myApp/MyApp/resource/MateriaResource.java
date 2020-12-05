@@ -2,6 +2,7 @@ package br.com.myApp.MyApp.resource;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 import javax.validation.Valid;
 
@@ -34,14 +35,14 @@ public class MateriaResource {
 	}
 	
 	@GetMapping("/materias/{idMateria}")
-	public ResponseEntity<?> getMateria(@PathVariable Long idMateria ) {
-		Optional<Materia> materia = materiaRepository.findById(idMateria); 
+	public ResponseEntity<?> getMateria(@PathVariable UUID idMateria) {
+		Optional<Materia> materia = materiaRepository.findById(idMateria);
 		return materia.isPresent() ?
 				ResponseEntity.ok(materia.get()) :
 				ResponseEntity.notFound().build();
-					
+
 	}
-	
+
 	@PostMapping("/materias")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Materia addMateria(@Valid @RequestBody Materia materia) {
@@ -52,13 +53,13 @@ public class MateriaResource {
 	public ResponseEntity<?> atualizarMateria(@Valid @RequestBody Materia materia) {
 		if (materiaRepository.findById(materia.getIdMateria()).isPresent())
 			return ResponseEntity.ok(materiaRepository.save(materia));
-		
+
 		return ResponseEntity.notFound().build();
 	}
 	
 	@DeleteMapping("/materias/{idMateria}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
-	public void excluirMateria(@PathVariable Long idMateria) {
+	public void excluirMateria(@PathVariable UUID idMateria) {
 		if (materiaRepository.findById(idMateria).isPresent())
 			materiaRepository.deleteById(idMateria);
 		
