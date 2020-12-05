@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import br.com.myApp.MyApp.model.dto.MateriaDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -38,7 +39,7 @@ public class MateriaResource {
 	public ResponseEntity<?> getMateria(@PathVariable UUID idMateria) {
 		Optional<Materia> materia = materiaRepository.findById(idMateria);
 		return materia.isPresent() ?
-				ResponseEntity.ok(materia.get()) :
+				ResponseEntity.ok(new MateriaDTO(materia.get())) :
 				ResponseEntity.notFound().build();
 
 	}

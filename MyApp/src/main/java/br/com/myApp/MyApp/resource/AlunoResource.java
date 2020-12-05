@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import br.com.myApp.MyApp.model.dto.AlunoDTO;
 import org.hibernate.type.UUIDCharType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -24,8 +25,9 @@ public class AlunoResource {
 	
 //	Listando todos os alunos
 	@GetMapping("")
-	public List<Aluno> getAlunos() {
-		return alunoRepository.findAll();
+	public List<AlunoDTO> getAlunos() {
+		List<AlunoDTO> alunoDTO = AlunoDTO.convertAlunoToDTO(alunoRepository.findAll());
+		return alunoDTO;
 	}
 	
 //	Buscando um aluno
@@ -34,7 +36,7 @@ public class AlunoResource {
 
 		Optional<Aluno> aluno = alunoRepository.findById(idAluno);
 		return aluno.isPresent() ?
-				ResponseEntity.ok(aluno.get()) :
+				ResponseEntity.ok(new AlunoDTO(aluno.get())) :
 				ResponseEntity.notFound().build();
 	}
 	

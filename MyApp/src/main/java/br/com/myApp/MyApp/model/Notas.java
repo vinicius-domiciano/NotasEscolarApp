@@ -35,7 +35,6 @@ public class Notas {
 
 //	Relacionando com tabela Aluno
 	@NotNull
-	@JsonIgnore
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_aluno", foreignKey = @ForeignKey(name = "ALUNO_ID_FK"))
 	private Aluno aluno;
