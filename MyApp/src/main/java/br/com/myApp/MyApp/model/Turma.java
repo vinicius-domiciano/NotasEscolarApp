@@ -12,6 +12,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity(name = "Turma")
+@Table(name = "tbl_turma")
 public class Turma {
 
     @Id
@@ -34,7 +36,7 @@ public class Turma {
     private PeriodoEnum periodo;
 
     //Relacionando com tabela Aluno
-    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "turma", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Aluno> alunos = new ArrayList<>();
 
     //Relacionando com tabela diciplina
@@ -94,6 +96,17 @@ public class Turma {
     }
 
     //Metodos de vinculo de tabela
+
+    public void addAluno(Aluno aluno) {
+        alunos.add(aluno);
+        aluno.setTurma(this);
+    }
+
+    public void removeAluno(Aluno aluno){
+        alunos.remove(aluno);
+        aluno.setTurma(null);
+    }
+
     public void addDiciplina(Diciplina diciplina) {
         diciplinas.add(diciplina);
         diciplina.getTurmas().add(this);

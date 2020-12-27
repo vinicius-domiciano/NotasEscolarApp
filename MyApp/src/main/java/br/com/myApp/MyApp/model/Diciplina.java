@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+@Entity(name = "Diciplina")
+@Table(name = "tbl_diciplina")
 public class Diciplina {
 
     @Id
