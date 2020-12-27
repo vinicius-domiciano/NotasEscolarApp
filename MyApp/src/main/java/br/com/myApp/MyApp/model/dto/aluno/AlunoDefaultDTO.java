@@ -1,31 +1,23 @@
-package br.com.myApp.MyApp.model.dto;
+package br.com.myApp.MyApp.model.dto.aluno;
 
 import br.com.myApp.MyApp.model.Aluno;
 import br.com.myApp.MyApp.model.enumerations.SerieEnum;
-import br.com.myApp.MyApp.model.enumerations.TurmaEnum;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.annotations.NaturalId;
-import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class AlunoDTO {
+public class AlunoDefaultDTO {
 
-    public AlunoDTO() {
+    public AlunoDefaultDTO() {
     }
 
-    public AlunoDTO(Aluno aluno) {
+    public AlunoDefaultDTO(Aluno aluno) {
         this.idAluno = aluno.getIdAluno();
         this.nome = aluno.getNome();
         this.ra = aluno.getRa();
         this.senha = aluno.getSenha();
         this.serie = aluno.getSerie();
-        this.turma = aluno.getTurma();
-        this.notas = NotasDTO.convertNotasToDTO(aluno.getNotas());
     }
 
     private UUID idAluno;
@@ -33,12 +25,6 @@ public class AlunoDTO {
     private String ra;
     private String senha;
     private SerieEnum serie;
-    private TurmaEnum turma;
-    private List<NotasDTO> notas;
-
-    public static List<AlunoDTO> convertAlunoToDTO(List<Aluno> alunos) {
-        return alunos.stream().map(AlunoDTO::new).collect(Collectors.toList());
-    }
 
     public UUID getIdAluno() {
         return idAluno;
@@ -80,19 +66,7 @@ public class AlunoDTO {
         this.serie = serie;
     }
 
-    public TurmaEnum getTurma() {
-        return turma;
-    }
-
-    public void setTurma(TurmaEnum turma) {
-        this.turma = turma;
-    }
-
-    public List<NotasDTO> getNotas() {
-        return notas;
-    }
-
-    public void setNotas(List<NotasDTO> notas) {
-        this.notas = notas;
+    public static List<AlunoDefaultDTO> convertAlunoToDTO(List<Aluno> alunos) {
+        return alunos.stream().map(AlunoDefaultDTO::new).collect(Collectors.toList());
     }
 }

@@ -1,21 +1,23 @@
-package br.com.myApp.MyApp.model.dto;
+package br.com.myApp.MyApp.model.dto.materia;
 
 import br.com.myApp.MyApp.model.Materia;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
-public class MateriaDTO {
-
-    public MateriaDTO() {
-    }
-
-    public MateriaDTO(Materia materia) {
-        this.idMateria = materia.getIdMateria();
-        this.materia = materia.getMateria();
-    }
+public class MateriaDefaultDTO {
 
     private UUID idMateria;
     private String materia;
+
+    public MateriaDefaultDTO() {
+    }
+
+    public MateriaDefaultDTO(Materia materia) {
+        this.idMateria = materia.getIdMateria();
+        this.materia = materia.getMateria();
+    }
 
     public UUID getIdMateria() {
         return idMateria;
@@ -32,4 +34,11 @@ public class MateriaDTO {
     public void setMateria(String materia) {
         this.materia = materia;
     }
+
+    /*Metodos*/
+
+    public static List<MateriaDefaultDTO> convertMateriaToDTO(List<Materia> materias) {
+        return materias.stream().map(MateriaDefaultDTO::new).collect(Collectors.toList());
+    }
+
 }

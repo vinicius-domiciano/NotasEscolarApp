@@ -1,4 +1,4 @@
-package br.com.myApp.MyApp.model.dto;
+package br.com.myApp.MyApp.model.dto.notas;
 
 import br.com.myApp.MyApp.model.Notas;
 import br.com.myApp.MyApp.model.enumerations.BimestreEnum;
@@ -7,26 +7,24 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class NotasDTO {
-
-    public NotasDTO() {
-    }
-
-    public NotasDTO(Notas notas) {
-        this.idNota = notas.getIdNota();
-        this.ano = notas.getAno();
-        this.bimestre = notas.getBimestre();
-        this.pontos = PontosDTO.convertPontosToDTO(notas.getPontos());
-    }
+public class NotasDefaultDTO {
 
     private UUID idNota;
     private int ano;
     private BimestreEnum bimestre;
-    private List<PontosDTO> pontos;
 
-    public static List<NotasDTO> convertNotasToDTO(List<Notas> notas) {
-        return notas.stream().map(NotasDTO::new).collect(Collectors.toList());
+    //Construtor
+
+    public NotasDefaultDTO() {
     }
+
+    public NotasDefaultDTO(Notas notas) {
+        this.idNota = notas.getIdNota();
+        this.ano = notas.getAno();
+        this.bimestre = notas.getBimestre();
+    }
+
+    /** GETTER E SETTER **/
 
     public UUID getIdNota() {
         return idNota;
@@ -52,11 +50,9 @@ public class NotasDTO {
         this.bimestre = bimestre;
     }
 
-    public List<PontosDTO> getPontos() {
-        return pontos;
-    }
+    /*Metodos*/
 
-    public void setPontos(List<PontosDTO> pontos) {
-        this.pontos = pontos;
+    public static List<NotasDefaultDTO> convertNotasToDTO(List<Notas> notas) {
+        return notas.stream().map(NotasDefaultDTO::new).collect(Collectors.toList());
     }
 }
