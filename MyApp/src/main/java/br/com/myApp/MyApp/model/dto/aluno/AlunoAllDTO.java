@@ -1,6 +1,7 @@
 package br.com.myApp.MyApp.model.dto.aluno;
 
 import br.com.myApp.MyApp.model.Aluno;
+import br.com.myApp.MyApp.model.dto.notas.NotasDefaultDTO;
 import br.com.myApp.MyApp.model.dto.turma.TurmaDefaultDTO;
 
 import java.util.ArrayList;
@@ -16,19 +17,26 @@ public class AlunoAllDTO extends AlunoDefaultDTO{
         this.setNome(aluno.getNome());
         this.setRa(aluno.getRa());
         this.setSenha(aluno.getSenha());
-        this.notas = NotasDTO.convertNotasToDTO(aluno.getNotas());
+        this.notas = NotasDefaultDTO.convertNotasToDTO(aluno.getNotas());
         this.turma = new TurmaDefaultDTO(aluno.getTurma());
     }
 
-    private List<NotasDTO> notas = new ArrayList<>();
+    private List<NotasDefaultDTO> notas = new ArrayList<>();
     private TurmaDefaultDTO turma;
 
-    public List<NotasDTO> getNotas() {
+    public List<NotasDefaultDTO> getNotas() {
         return notas;
     }
 
-    public void setNotas(List<NotasDTO> notas) {
+    public void setNotas(List<NotasDefaultDTO> notas) {
         this.notas = notas;
     }
 
+    public TurmaDefaultDTO getTurma() {
+        return turma;
+    }
+
+    public void setTurma(TurmaDefaultDTO turma) {
+        this.turma = turma;
+    }
 }
