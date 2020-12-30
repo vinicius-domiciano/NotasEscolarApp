@@ -6,7 +6,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
-import br.com.myApp.MyApp.model.dto.MateriaDTO;
+import br.com.myApp.MyApp.model.dto.materia.MateriaDefaultDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
@@ -24,33 +24,36 @@ import br.com.myApp.MyApp.model.Materia;
 import br.com.myApp.MyApp.repository.MateriaRepository;
 
 @RestController
-@RequestMapping("/escola")
+@RequestMapping("/escola/materias")
 public class MateriaResource {
 
 	@Autowired
 	private MateriaRepository materiaRepository;
 	
-	@GetMapping("/materias")
-	public List<Materia> getMaterias() {
-		return materiaRepository.findAll();
+	@GetMapping("")
+	public ResponseEntity<List<MateriaDefaultDTO>> getMaterias() {
+		List<Materia> materias = materiaRepository.findAll();
+		return new ResponseEntity<>(
+				MateriaDefaultDTO.convertMateriaToDTO(materias),
+				HttpStatus.OK);
 	}
 	
-	@GetMapping("/materias/{idMateria}")
+	@GetMapping("/{idMateria}")
 	public ResponseEntity<?> getMateria(@PathVariable UUID idMateria) {
 		Optional<Materia> materia = materiaRepository.findById(idMateria);
 		return materia.isPresent() ?
-				ResponseEntity.ok(new MateriaDTO(materia.get())) :
+				ResponseEntity.ok(new MateriaDefaultDTO(materia.get())) :
 				ResponseEntity.notFound().build();
 
 	}
 
-	@PostMapping("/materias")
+	@PostMapping("")
 	@ResponseStatus(HttpStatus.CREATED)
 	public Materia addMateria(@Valid @RequestBody Materia materia) {
 		return materiaRepository.save(materia);
 	}
 	
-	@PutMapping("/materias")
+	@PutMapping("")
 	public ResponseEntity<?> atualizarMateria(@Valid @RequestBody Materia materia) {
 		if (materiaRepository.findById(materia.getIdMateria()).isPresent())
 			return ResponseEntity.ok(materiaRepository.save(materia));
@@ -58,7 +61,7 @@ public class MateriaResource {
 		return ResponseEntity.notFound().build();
 	}
 	
-	@DeleteMapping("/materias/{idMateria}")
+	@DeleteMapping("/{idMateria}")
 	@ResponseStatus(HttpStatus.NO_CONTENT)
 	public void excluirMateria(@PathVariable UUID idMateria) {
 		if (materiaRepository.findById(idMateria).isPresent())
