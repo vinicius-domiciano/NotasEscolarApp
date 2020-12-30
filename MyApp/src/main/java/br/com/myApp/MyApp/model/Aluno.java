@@ -45,7 +45,6 @@ public class Aluno {
 	private List<Notas> notas = new ArrayList<Notas>();
 
 	//Relacionando com tabela turma
-	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "id_turma", foreignKey = @ForeignKey(name = "TURMA_ID_FK"))
 	private Turma turma;
