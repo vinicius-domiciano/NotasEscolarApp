@@ -10,6 +10,7 @@ import java.util.Objects;
 import java.util.UUID;
 
 import javax.persistence.*;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.ForeignKey;
 import javax.persistence.Table;
@@ -39,15 +40,17 @@ public class Professor {
 
 	// Relacionando com tabela Materia
 	@NotNull
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_materia", foreignKey = @ForeignKey(name = "MATERIA_ID_FK"))
-	private Materia materia;
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinColumns({
+			@JoinColumn(name="id_materia", referencedColumnName="id_materia"),
+			@JoinColumn(name="id_professor", referencedColumnName="id_professor")
+	})
+	private List<Materia> materias = new ArrayList<>();
 
-	// Relacionando com tabela Alunos
+	//Relacionando com tabela Diciplina
 	@NotNull
-	@JsonIgnore
-	@ManyToMany(mappedBy = "professores")
-	private List<Aluno> alunos = new ArrayList<>();
+	@OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
+	private List<Diciplina> diciplinas = new ArrayList<>();
 
 	/*
 	 * Getters e setters
@@ -85,33 +88,33 @@ public class Professor {
 		this.senha = senha;
 	}
 
-	public Materia getMateria() {
-		return materia;
+	public List<Materia> getMaterias() {
+		return materias;
 	}
 
-	public void setMateria(Materia materia) {
-		this.materia = materia;
+	public void setMaterias(List<Materia> materias) {
+		this.materias = materias;
 	}
 
-    public List<Aluno> getAlunos() {
-        return alunos;
-    }
+	public List<Diciplina> getDiciplinas() {
+		return diciplinas;
+	}
 
-    public void setAlunos(List<Aluno> alunos) {
-        this.alunos = alunos;
-    }
+	public void setDiciplinas(List<Diciplina> diciplinas) {
+		this.diciplinas = diciplinas;
+	}
 
-    /*
+	/*
 	 * metodos de adicionação/remoção de tabelas relacionadas
 	 */
 
-	public void addAluno(Aluno aluno) {
-		alunos.add(aluno);
-		aluno.getProfessores().add(this);
+	public void  addDiciplina(Diciplina diciplina) {
+		diciplinas.add(diciplina);
+		diciplina.setProfessor(this);
 	}
 
-	public void removeAluno(Aluno aluno) {
-		alunos.remove(aluno);
-		aluno.getProfessores().remove(this);
+	public void removeDiciplina (Diciplina diciplina) {
+		diciplinas.remove(diciplina);
+		diciplina.setProfessor(null);
 	}
 }

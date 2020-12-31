@@ -31,8 +31,8 @@ public class Pontos {
 //	Relacionando com tabela Materia
 	@NotNull
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_materia", foreignKey = @ForeignKey(name = "MATERIA_ID_FK"))
-	private Materia materia;
+	@JoinColumn(name = "id_diciplina", foreignKey = @ForeignKey(name = "MATERIA_DICIPLINA_ID_FK"))
+	private Diciplina diciplina;
 
 	/*
 	 * Getters e setters
@@ -62,12 +62,11 @@ public class Pontos {
 		this.nota = nota;
 	}
 
-	public Materia getMateria() {
-		return materia;
+	public Diciplina getDiciplina() {
+		return diciplina;
 	}
 
-	public void setMateria(Materia materia) {
-		this.materia = materia;
+	public void setDiciplina(Diciplina diciplina) {
+		this.diciplina = diciplina;
 	}
-
 }

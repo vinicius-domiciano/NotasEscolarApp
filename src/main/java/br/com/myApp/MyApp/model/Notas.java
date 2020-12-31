@@ -35,14 +35,13 @@ public class Notas {
 
 //	Relacionando com tabela Aluno
 	@NotNull
-	@JsonIgnore
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne
 	@JoinColumn(name = "id_aluno", foreignKey = @ForeignKey(name = "ALUNO_ID_FK"))
 	private Aluno aluno;
 	
 //	Relacionando com tabela Pontos
 	@OneToMany(mappedBy = "nota", cascade = CascadeType.ALL, orphanRemoval = true)
-	private List<Pontos> pontos = new ArrayList<Pontos>();
+	private List<Pontos> pontos = new ArrayList<>();
 
 	/*
 	 *Getters e setters

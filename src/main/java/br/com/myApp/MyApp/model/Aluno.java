@@ -40,21 +40,14 @@ public class Aluno {
 	@Enumerated(EnumType.ORDINAL)
 	private SerieEnum serie;
 
-	@Enumerated(EnumType.ORDINAL)
-	private TurmaEnum turma;
-
 //	Relacionando com tabela Notas
 	@OneToMany(mappedBy = "aluno", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Notas> notas = new ArrayList<Notas>();
-	
-//	Relacionando com tabela Professores
-	@NotNull
-	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
-	@JoinColumns({
-			@JoinColumn(name="id_aluno", referencedColumnName="id_aluno"),
-			@JoinColumn(name="id_professor", referencedColumnName="id_professor")
-	})
-	private List<Professor> professores = new ArrayList<>();
+
+	//Relacionando com tabela turma
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_turma", foreignKey = @ForeignKey(name = "TURMA_ID_FK"))
+	private Turma turma;
 
 	/*
 	 *Getters e setters
@@ -100,20 +93,8 @@ public class Aluno {
 		this.serie = serie;
 	}
 
-	public TurmaEnum getTurma() {
-		return turma;
-	}
-
-	public void setTurma(TurmaEnum turma) {
+	public void setTurma(Turma turma) {
 		this.turma = turma;
-	}
-
-	public List<Professor> getProfessores() {
-		return professores;
-	}
-
-	public void setProfessores(List<Professor> professores) {
-		this.professores = professores;
 	}
 
 	public List<Notas> getNotas() {
@@ -122,6 +103,10 @@ public class Aluno {
 
 	public void setNotas(List<Notas> notas) {
 		this.notas = notas;
+	}
+
+	public Turma getTurma() {
+		return turma;
 	}
 
 	/*
@@ -136,16 +121,6 @@ public class Aluno {
 	public void removeNotas (Notas nota) {
 		notas.remove(nota);
 		nota.setAluno(null);
-	}
-
-	public void addProfessor(Professor professor) {
-		professores.add(professor);
-		professor.getAlunos().add(this);
-	}
-
-	public void removeProfessor(Professor professor) {
-		professores.remove(professor);
-		professor.getAlunos().remove(this);
 	}
 
 }
