@@ -2,10 +2,14 @@ package br.com.myApp.MyApp.resource;
 
 import br.com.myApp.MyApp.model.Materia;
 import br.com.myApp.MyApp.model.Professor;
+import br.com.myApp.MyApp.model.converters.ProfessorConverter;
 import br.com.myApp.MyApp.model.dto.professor.ProfessorAllDTO;
 import br.com.myApp.MyApp.model.dto.professor.ProfessorDefaultDTO;
 import br.com.myApp.MyApp.repository.MateriaRepository;
 import br.com.myApp.MyApp.repository.ProfessorRepository;
+import com.fasterxml.jackson.databind.util.JSONPObject;
+import org.apache.tomcat.util.json.JSONParser;
+import org.apache.tomcat.util.json.ParseException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,13 +20,10 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/escola/professores")
+@RequestMapping(path = "/escola/professores", headers = "Accept=application/json")
 public class ProfessorResource {
 
-    @Autowired
     private final ProfessorRepository professorRepository;
-
-    @Autowired
     private final MateriaRepository materiaRepository;
 
     public ProfessorResource(ProfessorRepository professorRepository, MateriaRepository materiaRepository) {
@@ -70,6 +71,38 @@ public class ProfessorResource {
         professorRepository.save(professor);
 
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{idProfessor}")
+    public ResponseEntity<Object> updateProfessor(@PathVariable UUID idProfessor,
+          @RequestBody @Valid ProfessorDefaultDTO professorDTO) {
+
+        Professor professor = professorRepository
+                .findById(idProfessor)
+                .orElse(null);
+
+        if (professor == null)
+            return ResponseEntity.badRequest().build();
+
+        Professor professorConverted = new ProfessorConverter().convert(professorDTO);
+        professorConverted.setIdProfessor(idProfessor);
+
+        professor = professorRepository.save(professorConverted);
+
+        return new ResponseEntity<>(new ProfessorDefaultDTO(professor), HttpStatus.OK);
+    }
+
+    @DeleteMapping("/{idProfessor}")
+    public ResponseEntity<Object> deleteProf(@PathVariable UUID idProfessor) throws ParseException {
+        Professor professor = professorRepository.findById(idProfessor).orElse(null);
+
+        if (professor == null)
+            return new ResponseEntity<>("{\"Erro\":\"Não foi possivel encontra o professor\"}",
+                    HttpStatus.NOT_FOUND);
+
+        professorRepository.delete(professor);
+
+        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
     }
 
 }
