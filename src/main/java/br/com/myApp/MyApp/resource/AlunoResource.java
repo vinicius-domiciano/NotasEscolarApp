@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 import br.com.myApp.MyApp.model.Turma;
+import br.com.myApp.MyApp.model.converters.AlunoConverter;
 import br.com.myApp.MyApp.model.dto.aluno.AlunoAllDTO;
 import br.com.myApp.MyApp.model.dto.aluno.AlunoDefaultDTO;
 import br.com.myApp.MyApp.repository.TurmaRepository;
@@ -49,7 +50,8 @@ public class AlunoResource {
 	/*Cadastrar Aluno*/
 	@PostMapping
 	@ResponseStatus(HttpStatus.CREATED)
-	public AlunoDefaultDTO adicionarAluno(@Valid @RequestBody Aluno aluno) {
+	public AlunoDefaultDTO adicionarAluno(@Valid @RequestBody AlunoDefaultDTO alunoDTO) {
+		Aluno aluno = new AlunoConverter().convert(alunoDTO);
 		return new AlunoDefaultDTO(alunoRepository.save(aluno));
 	}
 
