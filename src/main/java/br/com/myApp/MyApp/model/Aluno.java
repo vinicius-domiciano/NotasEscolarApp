@@ -19,6 +19,22 @@ import javax.validation.constraints.NotNull;
 @Table(name = "tbl_aluno")
 public class Aluno {
 
+	public Aluno() {
+	}
+
+	public Aluno(UUID idAluno, @NotNull String nome) {
+		this.idAluno = idAluno;
+		this.nome = nome;
+	}
+
+	public Aluno(UUID idAluno, @NotNull String nome, @NotNull String ra, @NotNull String senha, SerieEnum serie) {
+		this.idAluno = idAluno;
+		this.nome = nome;
+		this.ra = ra;
+		this.senha = senha;
+		this.serie = serie;
+	}
+
 	@Id
 	@GeneratedValue(generator = "uuid4")
 	@GenericGenerator(name = "UUID", strategy = "uuid4")
