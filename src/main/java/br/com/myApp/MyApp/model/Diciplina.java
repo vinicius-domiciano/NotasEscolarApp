@@ -35,8 +35,28 @@ public class Diciplina {
     @JoinColumn(name = "id_professor", foreignKey = @ForeignKey(name = "PROFESSOR_ID_FK"))
     private Professor professor;
 
-    @ManyToMany(mappedBy = "diciplinas")
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumns({
+            @JoinColumn(name="id_diciplina", referencedColumnName="id_diciplina"),
+            @JoinColumn(name="id_turma", referencedColumnName="id_turma")
+    })
     private List<Turma> turmas = new ArrayList<>();
+
+    public Diciplina() {
+    }
+
+    public Diciplina(UUID idDiciplina, @NotNull SerieEnum serie) {
+        this.idDiciplina = idDiciplina;
+        this.serie = serie;
+    }
+
+    public Diciplina(UUID idDiciplina, @NotNull SerieEnum serie, @NotNull Materia materia, @NotNull Professor professor, List<Turma> turmas) {
+        this.idDiciplina = idDiciplina;
+        this.serie = serie;
+        this.materia = materia;
+        this.professor = professor;
+        this.turmas = turmas;
+    }
 
     public UUID getIdDiciplina() {
         return idDiciplina;
@@ -76,5 +96,17 @@ public class Diciplina {
 
     public void setProfessor(Professor professor) {
         this.professor = professor;
+    }
+
+    /***  ***/
+
+    public void addTurma(Turma turma) {
+        turmas.add(turma);
+        turma.getDiciplinas().add(this);
+    }
+
+    public void removeTurma(Turma turma) {
+        turmas.remove(turma);
+        turma.getDiciplinas().remove(this);
     }
 }
