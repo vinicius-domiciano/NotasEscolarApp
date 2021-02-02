@@ -12,6 +12,14 @@ import java.util.UUID;
 @Table(name = "tbl_pontos")
 public class Pontos {
 
+	public Pontos() {
+	}
+
+	public Pontos(UUID idPonto, @NotNull double pontuacao) {
+		this.idPonto = idPonto;
+		this.pontuacao = pontuacao;
+	}
+
 	@Id
 	@GeneratedValue(generator = "uuid4")
 	@GenericGenerator(name = "UUID", strategy = "uuid4")
