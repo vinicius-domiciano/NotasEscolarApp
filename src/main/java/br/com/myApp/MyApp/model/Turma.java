@@ -40,10 +40,32 @@ public class Turma {
     private List<Aluno> alunos = new ArrayList<>();
 
     //Relacionando com tabela diciplina
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @ManyToMany(mappedBy = "turmas")
     private List<Diciplina> diciplinas = new ArrayList<>();
 
+    public Turma() {
+    }
 
+    public Turma(UUID idTurma, @NotNull TurmaEnum turma) {
+        this.idTurma = idTurma;
+        this.turma = turma;
+    }
+
+    public Turma(UUID idTurma, @NotNull TurmaEnum turma, @NotNull SerieEnum serie, @NotNull PeriodoEnum periodo) {
+        this.idTurma = idTurma;
+        this.turma = turma;
+        this.serie = serie;
+        this.periodo = periodo;
+    }
+
+    public Turma(UUID idTurma, @NotNull TurmaEnum turma, @NotNull SerieEnum serie, @NotNull PeriodoEnum periodo, List<Aluno> alunos, List<Diciplina> diciplinas) {
+        this.idTurma = idTurma;
+        this.turma = turma;
+        this.serie = serie;
+        this.periodo = periodo;
+        this.alunos = alunos;
+        this.diciplinas = diciplinas;
+    }
 
     //Getter e Setters
 
