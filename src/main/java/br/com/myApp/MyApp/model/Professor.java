@@ -52,6 +52,34 @@ public class Professor {
 	@OneToMany(mappedBy = "professor", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<Diciplina> diciplinas = new ArrayList<>();
 
+	//Construtores
+
+	public Professor() {
+	}
+
+	public Professor(UUID idProfessor, @NotNull String nome) {
+		this.idProfessor = idProfessor;
+		this.nome = nome;
+	}
+
+	public Professor(UUID idProfessor, @NotNull String nome, @NotNull String email, @NotNull String senha) {
+		this.idProfessor = idProfessor;
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+	}
+
+	public Professor(UUID idProfessor, @NotNull String nome, @NotNull String email, @NotNull String senha,
+					 @NotNull List<Materia> materias, @NotNull List<Diciplina> diciplinas) {
+		this.idProfessor = idProfessor;
+		this.nome = nome;
+		this.email = email;
+		this.senha = senha;
+		this.materias = materias;
+		this.diciplinas = diciplinas;
+	}
+
+
 	/*
 	 * Getters e setters
 	 */
