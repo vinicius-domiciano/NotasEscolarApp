@@ -10,7 +10,7 @@ import java.util.List;
 public class ProfessorAllDTO extends ProfessorDefaultDTO{
 
     private List<MateriaDefaultDTO> materias = new ArrayList<>();
-    private List<DiciplinaDefaultDTO> diciplinas = new ArrayList<>();
+    private List<DiciplinaDefaultDTO> diciplinasAplicadas = new ArrayList<>();
 
     /*Contrutor*/
 
@@ -23,7 +23,7 @@ public class ProfessorAllDTO extends ProfessorDefaultDTO{
         this.setNome(professor.getNome());
         this.setSenha(professor.getSenha());
         this.materias = MateriaDefaultDTO.convertMateriaToDTO(professor.getMaterias());
-        this.diciplinas = DiciplinaDefaultDTO.convertDiciplinaToDTO(professor.getDiciplinas());
+        this.diciplinasAplicadas = DiciplinaDefaultDTO.convertDiciplinaToDTO(professor.getDiciplinas());
     }
 
     /** GETTER E SETTER **/
@@ -36,11 +36,11 @@ public class ProfessorAllDTO extends ProfessorDefaultDTO{
         this.materias = materias;
     }
 
-    public List<DiciplinaDefaultDTO> getDiciplinas() {
-        return diciplinas;
+    public List<DiciplinaDefaultDTO> getDiciplinasAplicadas() {
+        return diciplinasAplicadas;
     }
 
-    public void setDiciplinas(List<DiciplinaDefaultDTO> diciplinas) {
-        this.diciplinas = diciplinas;
+    public void setDiciplinasAplicadas(List<DiciplinaDefaultDTO> diciplinasAplicadas) {
+        this.diciplinasAplicadas = diciplinasAplicadas;
     }
 }
