@@ -27,6 +27,13 @@ public class Materia {
 	@NotNull
 	private String materia;
 
+	public Materia() {
+	}
+
+	public Materia(UUID idMateria, @NotNull String materia) {
+		this.idMateria = idMateria;
+		this.materia = materia;
+	}
 
 	/*
 	 *Getters e setters
