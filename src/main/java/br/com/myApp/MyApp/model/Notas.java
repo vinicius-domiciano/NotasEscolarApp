@@ -20,6 +20,24 @@ import javax.validation.constraints.NotNull;
 @Table(name = "tbl_notas")
 public class Notas {
 
+	public Notas() {
+	}
+
+	public Notas(UUID idNota, int ano, @NotNull BimestreEnum bimestre, @NotNull Aluno aluno) {
+		this.idNota = idNota;
+		this.ano = ano;
+		this.bimestre = bimestre;
+		this.aluno = aluno;
+	}
+
+	public Notas(UUID idNota, int ano, @NotNull BimestreEnum bimestre, @NotNull Aluno aluno, List<Pontos> pontos) {
+		this.idNota = idNota;
+		this.ano = ano;
+		this.bimestre = bimestre;
+		this.aluno = aluno;
+		this.pontos = pontos;
+	}
+
 	@Id
 	@GeneratedValue(generator = "uuid4")
 	@GenericGenerator(name = "UUID", strategy = "uuid4")
