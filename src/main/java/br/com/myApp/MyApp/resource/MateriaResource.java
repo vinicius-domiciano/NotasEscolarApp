@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import javax.validation.Valid;
 
+import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.dto.materia.MateriaDefaultDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -40,10 +41,10 @@ public class MateriaResource {
 	
 	@GetMapping("/{idMateria}")
 	public ResponseEntity<?> getMateria(@PathVariable UUID idMateria) {
-		Optional<Materia> materia = materiaRepository.findById(idMateria);
-		return materia.isPresent() ?
-				ResponseEntity.ok(new MateriaDefaultDTO(materia.get())) :
-				ResponseEntity.notFound().build();
+		Materia materia = materiaRepository.findById(idMateria)
+				.orElseThrow(() -> new NotFoundException("Ops, Materia não encontarda para o id informado"));
+
+		return ResponseEntity.ok(new MateriaDefaultDTO(materia)) ;
 
 	}
 
@@ -58,7 +59,7 @@ public class MateriaResource {
 		if (materiaRepository.findById(materia.getIdMateria()).isPresent())
 			return ResponseEntity.ok(materiaRepository.save(materia));
 
-		return ResponseEntity.notFound().build();
+		throw new NotFoundException("Ops, não foi possivel atualizar, a materia não foi encontrada");
 	}
 	
 	@DeleteMapping("/{idMateria}")
@@ -66,7 +67,8 @@ public class MateriaResource {
 	public void excluirMateria(@PathVariable UUID idMateria) {
 		if (materiaRepository.findById(idMateria).isPresent())
 			materiaRepository.deleteById(idMateria);
-		
+
+		throw new NotFoundException("Ops, não foi possivel deletar, a materia não foi encontrada");
 	}
 	
 }

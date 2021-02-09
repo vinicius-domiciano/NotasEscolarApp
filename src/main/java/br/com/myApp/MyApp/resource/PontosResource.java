@@ -1,5 +1,6 @@
 package br.com.myApp.MyApp.resource;
 
+import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Diciplina;
 import br.com.myApp.MyApp.model.Notas;
 import br.com.myApp.MyApp.model.Pontos;
@@ -46,11 +47,9 @@ public class PontosResource {
         Diciplina diciplina = diciplinaRepository.findById(idDiciplina).orElse(null);
 
         if (nota == null || idNota.toString().isEmpty())
-            return new ResponseEntity<>("{\"erro\":\"Ops, Não foi possivel encontrar a nota para o id fornecido\"}",
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Ops, Não foi possivel encontrar a nota para o id fornecido");
         else if (diciplina == null || idDiciplina.toString().isEmpty())
-            return new ResponseEntity<>("{\"erro\":\"Ops, Não foi possivel encontrar a diciplina para o id fornecido\"}",
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Ops, Não foi possivel encontrar a diciplina para o id fornecido");
             
         Pontos pontoConverted = new PontosConverter().convert(ponto);
         pontoConverted.setDiciplina(diciplina);
@@ -72,8 +71,7 @@ public class PontosResource {
         Pontos ponto = pontosRepository.findById(idPonto).orElse(null);
 
         if (ponto == null)
-            return new ResponseEntity<>("{\"erro\":\"Ops, não foi possivel encontrar o ponto pelo id informado\"}",
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Ops, não foi possivel encontrar o ponto pelo id informado");
 
         return new ResponseEntity<>(new PontosAllDTO(ponto), HttpStatus.OK);
     }

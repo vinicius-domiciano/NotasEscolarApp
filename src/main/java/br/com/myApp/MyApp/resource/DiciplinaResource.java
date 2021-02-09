@@ -1,5 +1,6 @@
 package br.com.myApp.MyApp.resource;
 
+import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Diciplina;
 import br.com.myApp.MyApp.model.Materia;
 import br.com.myApp.MyApp.model.Professor;
@@ -69,14 +70,9 @@ public class DiciplinaResource {
     @PostMapping("/{idDiciplina}/adicionar/turmas")
     public ResponseEntity<?> adicionarTurmaDiciplina(@PathVariable UUID idDiciplina,
                                                      @Valid @RequestBody List<TurmaIdentifyDTO> turmas) {
-        Diciplina diciplina = diciplinaRepository.findById(idDiciplina).orElse(null);
-
-        if (diciplina == null) {
-            return new ResponseEntity<>(
-                    "{\"erro\":\"Ops, não foi possivel encontra a diciplina\"}",
-                    HttpStatus.NOT_FOUND
-            );
-        }
+        Diciplina diciplina = diciplinaRepository
+                .findById(idDiciplina)
+                .orElseThrow(() -> new NotFoundException("Ops, não foi possivel encontra a diciplina"));
 
         List<TurmaIdentifyDTO> turmasExistente = turmas
                 .stream()
@@ -84,10 +80,7 @@ public class DiciplinaResource {
                 .collect(Collectors.toList());
 
         if (!turmasExistente.isEmpty()) {
-            return new ResponseEntity<>(
-                    "{\"erro\":\"Ops, alguma(s) turma(s) ja foram cadastrada(s) \"}",
-                    HttpStatus.BAD_REQUEST
-            );
+            throw new NotFoundException("Ops, alguma(s) turma(s) ja foram cadastrada(s)");
         }
 
         List<Turma> turmaList = turmas
@@ -124,14 +117,9 @@ public class DiciplinaResource {
 
     @GetMapping("/{idDiciplina}")
     public  ResponseEntity<?> searchDiciplina(@PathVariable UUID idDiciplina) {
-        Diciplina diciplina = diciplinaRepository.findById(idDiciplina).orElse(null);
-
-        if (diciplina == null) {
-            return new ResponseEntity<>(
-                    "{\"erro\":\"Ops, não foi possivel encontra a diciplina\"}",
-                    HttpStatus.NOT_FOUND
-            );
-        }
+        Diciplina diciplina = diciplinaRepository
+                .findById(idDiciplina)
+                .orElseThrow(() -> new NotFoundException("Ops, não foi possivel encontra a diciplina"));
 
         return new ResponseEntity<>(
                 new DiciplinaAllDTO(diciplina),
@@ -142,21 +130,21 @@ public class DiciplinaResource {
     @DeleteMapping("/{idDiciplina}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteDiciplina(@PathVariable UUID idDiciplina) {
-        Diciplina diciplina = diciplinaRepository.findById(idDiciplina).orElse(null);
+        Diciplina diciplina = diciplinaRepository
+                .findById(idDiciplina)
+                .orElseThrow(() -> new NotFoundException("Ops, não foi possivel encontrar a diciplina"));
 
-        if (diciplina != null)
-            diciplinaRepository.delete(diciplina);
+        diciplinaRepository.delete(diciplina);
     }
 
     @DeleteMapping("/{idDiciplina}/remover/turma/{idTurma}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteTurmaDiciplina(@PathVariable UUID idDiciplina,
                                         @PathVariable UUID idTurma) {
-        Diciplina diciplina = diciplinaRepository.findById(idDiciplina).orElse(null);
-        Turma turma = turmaRepository.findById(idTurma).orElse(null);
-
-        if (diciplina == null || turma == null)
-            return;
+        Diciplina diciplina = diciplinaRepository.findById(idDiciplina)
+                .orElseThrow(() -> new NotFoundException("Ops, diciplina não foi encontrada"));
+        Turma turma = turmaRepository.findById(idTurma)
+                .orElseThrow(() -> new NotFoundException("Ops, não foi possivel encontrar a turma"));
 
         List<Turma> turmas = diciplina.getTurmas();
         turmas.remove(turma);

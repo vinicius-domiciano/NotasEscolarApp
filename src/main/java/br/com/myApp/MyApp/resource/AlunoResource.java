@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
+import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Turma;
 import br.com.myApp.MyApp.model.converters.AlunoConverter;
 import br.com.myApp.MyApp.model.dto.aluno.AlunoAllDTO;
@@ -41,10 +42,11 @@ public class AlunoResource {
 	@GetMapping("/{idAluno}")
 	public ResponseEntity<?> getAluno(@PathVariable UUID idAluno) {
 
-		Optional<Aluno> aluno = alunoRepository.findById(idAluno);
-		return aluno.isPresent() ?
-				ResponseEntity.ok(new AlunoAllDTO(aluno.get())) :
-				ResponseEntity.notFound().build();
+		Aluno aluno = alunoRepository
+				.findById(idAluno)
+				.orElseThrow(() -> new NotFoundException("Ops, não foi possivel encontrar o aluno"));
+
+		return ResponseEntity.ok(new AlunoAllDTO(aluno));
 	}
 
 	/*Cadastrar Aluno*/
@@ -60,14 +62,11 @@ public class AlunoResource {
 	public ResponseEntity addAlunoTurma(@PathVariable UUID idAluno,
 							  @PathVariable UUID idTurma) {
 
-		Optional<Aluno> alunoOptional = alunoRepository.findById(idAluno);
-		Optional<Turma> turmaOptional = turmaRepository.findById(idTurma);
+		Aluno aluno = alunoRepository.findById(idAluno)
+				.orElseThrow(() -> new NotFoundException("Ops, não foi possivel encontrar o aluno"));
 
-		if (!alunoOptional.isPresent() || turmaOptional.isPresent())
-			return ResponseEntity.notFound().build();
-
-		Aluno aluno = alunoOptional.get();
-		Turma turma = turmaOptional.get();
+		Turma turma = turmaRepository.findById(idTurma)
+				.orElseThrow(() -> new NotFoundException("Ops, não foi possivel encontrar a turma"));
 
 		aluno.setTurma(turma);
 		alunoRepository.save(aluno);

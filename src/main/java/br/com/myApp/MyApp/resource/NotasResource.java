@@ -1,5 +1,6 @@
 package br.com.myApp.MyApp.resource;
 
+import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Aluno;
 import br.com.myApp.MyApp.model.Notas;
 import br.com.myApp.MyApp.model.converters.AlunoIdentifyConverter;
@@ -34,7 +35,7 @@ public class NotasResource {
         Notas nota = notasRepository.findById(idNota).orElse(null);
 
         if (nota == null)
-            return new ResponseEntity<>("{'Error':'Ops. Não foi posivel encontrar a nota'}", HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Ops. Não foi posivel encontrar a nota");
 
         return new ResponseEntity<>(new NotasAllDTO(nota), HttpStatus.OK);
     }
@@ -49,8 +50,7 @@ public class NotasResource {
         Aluno aluno = alunoRepository.findById(idAluno).orElse(null);
 
         if(idAluno.toString().isEmpty() || idAluno == null || aluno == null)
-            return new ResponseEntity<>("{\"Error\":\"Ops. Não foi posivel encontrar o aluno\"}",
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Ops. Não foi posivel encontrar o aluno");
 
         Optional<Notas> notaOptional = notasRepository
                 .findByAnoAndBimestreAndAluno(notasDefaultDTO.getAno(),
@@ -73,8 +73,7 @@ public class NotasResource {
         Notas nota = notasRepository.findById(idNota).orElse(null);
 
         if (nota == null)
-            return new ResponseEntity<>("{\"Error\":\"Ops. Não foi posivel encontrar a nota\"}",
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Ops. Não foi posivel encontrar a nota");
 
         notasRepository.delete(nota);
 

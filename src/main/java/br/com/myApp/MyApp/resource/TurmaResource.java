@@ -1,5 +1,6 @@
 package br.com.myApp.MyApp.resource;
 
+import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Turma;
 import br.com.myApp.MyApp.model.converters.TurmaConverter;
 import br.com.myApp.MyApp.model.dto.turma.TurmaAllDTO;
@@ -49,9 +50,7 @@ public class TurmaResource {
     public ResponseEntity<?> searchByIdTurma(@PathVariable UUID idTurma) {
         Turma turma = turmaRepository.findById(idTurma).orElse(null);
         if (turma == null)
-            return new ResponseEntity<>(
-                    "\"erro\":\"Ops, não foi possivel encontrar a turma.\"",
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Ops, não foi possivel encontrar a turma.");
 
         return new ResponseEntity<>(
                 new TurmaAllDTO(turma),

@@ -1,5 +1,6 @@
 package br.com.myApp.MyApp.resource;
 
+import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Materia;
 import br.com.myApp.MyApp.model.Professor;
 import br.com.myApp.MyApp.model.converters.ProfessorConverter;
@@ -42,7 +43,7 @@ public class ProfessorResource {
         Professor professor = professorRepository.findById(idProfessor).orElse(null);
 
         if (professor == null)
-            return new ResponseEntity<>("{'Error':'Ops. Não foi posivel encontrar o professor'}",HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Ops. Não foi posivel encontrar o professor");
 
         return new ResponseEntity<>(new ProfessorAllDTO(professor), HttpStatus.OK);
     }
@@ -59,10 +60,9 @@ public class ProfessorResource {
         Materia materia = materiaRepository.findById(idMateria).orElse(null);
 
         if (professor == null)
-            return new ResponseEntity<>("Não foi possivel adicionar, professor não encontrado", HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Não foi possivel adicionar, professor não encontrado");
         else if (materia == null)
-            return new ResponseEntity<>("Não foi possivel adicionar, materia não encontrado", HttpStatus.NOT_FOUND);
-
+            throw new NotFoundException("Não foi possivel adicionar, materia não encontrado");
 
         if(professor.getMaterias().indexOf(materia) > 0)
             return new ResponseEntity<>("Não foi possivel adicionar, materia já cadastrada", HttpStatus.BAD_REQUEST);
@@ -82,7 +82,7 @@ public class ProfessorResource {
                 .orElse(null);
 
         if (professor == null)
-            return ResponseEntity.badRequest().build();
+            throw new NotFoundException("Ops, não será possivel atualizar. O professor informado não existe!!");
 
         Professor professorConverted = new ProfessorConverter().convert(professorDTO);
         professorConverted.setIdProfessor(idProfessor);
@@ -93,16 +93,15 @@ public class ProfessorResource {
     }
 
     @DeleteMapping("/{idProfessor}")
-    public ResponseEntity<Object> deleteProf(@PathVariable UUID idProfessor) throws ParseException {
+    public ResponseEntity deleteProf(@PathVariable UUID idProfessor) throws ParseException {
         Professor professor = professorRepository.findById(idProfessor).orElse(null);
 
         if (professor == null)
-            return new ResponseEntity<>("{\"Erro\":\"Não foi possivel encontra o professor\"}",
-                    HttpStatus.NOT_FOUND);
+            throw new NotFoundException("Ops, não foi possivel encontra o professor");
 
         professorRepository.delete(professor);
 
-        return new ResponseEntity<>("", HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
 }
