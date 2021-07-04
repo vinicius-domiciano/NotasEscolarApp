@@ -1,12 +1,10 @@
 package br.com.myApp.MyApp.resource;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 import javax.validation.Valid;
 
-import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.dto.materia.MateriaDefaultDTO;
 import br.com.myApp.MyApp.service.MateriaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,9 +20,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
-
-import br.com.myApp.MyApp.model.Materia;
-import br.com.myApp.MyApp.repository.MateriaRepository;
 
 @RestController
 @RequestMapping(path = "/escola/materias", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.ALL_VALUE })
@@ -43,31 +38,24 @@ public class MateriaResource {
 	}
 
 	@GetMapping("/buscar/{idMateria}")
-	public ResponseEntity<MateriaDefaultDTO> getMateria(@PathVariable UUID idMateria) {
+	public ResponseEntity<MateriaDefaultDTO> getMateria(@PathVariable(name = "idMateria") UUID idMateria) {
 		return new ResponseEntity<>(this.materiaService.findMateriaById(idMateria), HttpStatus.OK) ;
 	}
 
-//	@PostMapping("")
-//	@ResponseStatus(HttpStatus.CREATED)
-//	public Materia addMateria(@Valid @RequestBody Materia materia) {
-//		return materiaRepository.save(materia);
-//	}
-//
-//	@PutMapping("")
-//	public ResponseEntity<?> atualizarMateria(@Valid @RequestBody Materia materia) {
-//		if (materiaRepository.findById(materia.getIdMateria()).isPresent())
-//			return ResponseEntity.ok(materiaRepository.save(materia));
-//
-//		throw new NotFoundException("Ops, não foi possivel atualizar, a materia não foi encontrada");
-//	}
-//
-//	@DeleteMapping("/{idMateria}")
-//	@ResponseStatus(HttpStatus.NO_CONTENT)
-//	public void excluirMateria(@PathVariable UUID idMateria) {
-//		if (materiaRepository.findById(idMateria).isPresent())
-//			materiaRepository.deleteById(idMateria);
-//
-//		throw new NotFoundException("Ops, não foi possivel deletar, a materia não foi encontrada");
-//	}
-//
+	@PostMapping
+	public ResponseEntity<MateriaDefaultDTO> addMateria(@Valid @RequestBody MateriaDefaultDTO materia) {
+		return new ResponseEntity<>(this.materiaService.saveMateria(materia), HttpStatus.CREATED);
+	}
+
+	@PutMapping("/atualizar")
+	public ResponseEntity<MateriaDefaultDTO> atualizarMateria(@Valid @RequestBody MateriaDefaultDTO materia) {
+		return new ResponseEntity<>(this.materiaService.updateMateria(materia), HttpStatus.OK);
+	}
+
+	@DeleteMapping("/deletar/{idMateria}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void excluirMateria(@PathVariable(name = "idMateria") UUID idMateria) {
+		this.materiaService.deleteMateria(idMateria);
+	}
+
 }
