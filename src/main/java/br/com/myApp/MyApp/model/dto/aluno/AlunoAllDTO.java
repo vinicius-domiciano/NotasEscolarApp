@@ -19,6 +19,7 @@ public class AlunoAllDTO extends AlunoDefaultDTO{
         this.setRa(aluno.getRa());
         this.setSenha(aluno.getSenha());
         this.setSerie(aluno.getSerie());
+        this.setDataNascimento(aluno.getDataNascimento());
         this.notas = NotasDefaultDTO.convertNotasToDTO(aluno.getNotas());
         if (Boolean.FALSE.equals(Objects.isNull(aluno.getTurma())))
             this.turma = new TurmaDefaultDTO(aluno.getTurma());

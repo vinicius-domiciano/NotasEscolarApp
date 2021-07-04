@@ -14,6 +14,7 @@ public class AlunoConverter implements Converter<AlunoDefaultDTO, Aluno> {
                 alunoDefaultDTO.getNome(),
                 alunoDefaultDTO.getRa(),
                 alunoDefaultDTO.getSenha(),
-                alunoDefaultDTO.getSerie());
+                alunoDefaultDTO.getSerie(),
+                alunoDefaultDTO.getDataNascimento());
     }
 }

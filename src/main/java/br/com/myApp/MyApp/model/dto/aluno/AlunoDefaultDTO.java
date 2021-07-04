@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ public class AlunoDefaultDTO {
         this.ra = aluno.getRa();
         this.senha = aluno.getSenha();
         this.serie = aluno.getSerie();
+        this.dataNascimento = aluno.getDataNascimento();
     }
 
     @JsonProperty(value = "idAluno")
@@ -38,6 +40,8 @@ public class AlunoDefaultDTO {
 
     @JsonProperty(value = "senha")
     private String senha;
+
+    private Date dataNascimento;
 
     @NotNull(message = "Ops, a serie não pode ser nulo.")
     @JsonProperty(value = "serie")
@@ -81,6 +85,14 @@ public class AlunoDefaultDTO {
 
     public void setSerie(SerieEnum serie) {
         this.serie = serie;
+    }
+
+    public Date getDataNascimento() {
+        return dataNascimento;
+    }
+
+    public void setDataNascimento(Date dataNascimento) {
+        this.dataNascimento = dataNascimento;
     }
 
     public static List<AlunoDefaultDTO> convertAlunoToDTO(List<Aluno> alunos) {
