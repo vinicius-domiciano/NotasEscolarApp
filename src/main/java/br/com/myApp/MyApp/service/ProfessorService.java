@@ -43,8 +43,12 @@ public class ProfessorService extends BaseService<ProfessorRepository, Professor
 
         if (Objects.isNull(professorDefaultDTO.getIdProfessor()) || professorDefaultDTO.getIdProfessor().toString().isEmpty())
             throw new BadRequestException("Necessario enviar o id");
+        else if (Objects.isNull(professor))
+            throw new BadRequestException("Erro ao tentar converter Professor");
 
-        this.findProfessorById(professorDefaultDTO.getIdProfessor());
+        var professorDTO = this.findProfessorById(professorDefaultDTO.getIdProfessor());
+        professor.setSenha(professorDTO.getSenha());
+        professor.setEmail(professorDTO.getEmail());
 
         return this.save(professor);
     }

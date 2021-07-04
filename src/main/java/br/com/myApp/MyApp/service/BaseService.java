@@ -42,6 +42,7 @@ public class BaseService<R extends CrudRepository, E, D> {
         try {
             return (D) this.constructor.newInstance(this.repository.save(entity));
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             throw new BadRequestException("Ocorreu um erro ao tentar salvar");
         }
     }

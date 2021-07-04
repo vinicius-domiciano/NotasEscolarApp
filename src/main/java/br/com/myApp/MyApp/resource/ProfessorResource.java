@@ -29,7 +29,7 @@ public class ProfessorResource {
         return new ResponseEntity<>(this.professorService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping("/{idProfessor}")
+    @GetMapping("/buscar/{idProfessor}")
     public ResponseEntity<ProfessorAllDTO> searchProfessor(@PathVariable(name = "idProfessor") UUID idProfessor) {
         return new ResponseEntity<>(this.professorService.findProfessorById(idProfessor), HttpStatus.OK);
     }
@@ -39,7 +39,7 @@ public class ProfessorResource {
         return new ResponseEntity<>(this.professorService.saveProfessor(professor), HttpStatus.CREATED);
     }
 
-    @PutMapping("/atualizar/{idProfessor}")
+    @PutMapping("/atualizar")
     public ResponseEntity<ProfessorDefaultDTO> updateProfessor(@RequestBody @Valid ProfessorDefaultDTO professorDTO) {
         return new ResponseEntity<>(this.professorService.updateProfessor(professorDTO), HttpStatus.OK);
     }
