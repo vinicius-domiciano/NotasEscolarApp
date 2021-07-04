@@ -45,6 +45,10 @@ public class Diciplina {
     public Diciplina() {
     }
 
+    public Diciplina(UUID idDiciplina) {
+        this.idDiciplina = idDiciplina;
+    }
+
     public Diciplina(UUID idDiciplina, @NotNull SerieEnum serie) {
         this.idDiciplina = idDiciplina;
         this.serie = serie;

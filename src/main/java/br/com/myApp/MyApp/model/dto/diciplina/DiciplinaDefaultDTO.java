@@ -7,6 +7,7 @@ import br.com.myApp.MyApp.model.dto.professor.ProfessorIdentifyDTO;
 import br.com.myApp.MyApp.model.dto.turma.TurmaIdentifyDTO;
 import br.com.myApp.MyApp.model.enumerations.SerieEnum;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -15,8 +16,14 @@ public class DiciplinaDefaultDTO {
 
     private UUID idDiciplina;
     private SerieEnum serie;
+
+    @NotNull(message = "é necessario passar a materia")
     private MateriaDefaultDTO materia;
+
+    @NotNull(message = "é necessario passar o professor")
     private ProfessorIdentifyDTO professorIdentify;
+
+    @NotNull(message = "é necessario passar a turma")
     private List<TurmaIdentifyDTO> turmasIdentify;
 
     public DiciplinaDefaultDTO() {

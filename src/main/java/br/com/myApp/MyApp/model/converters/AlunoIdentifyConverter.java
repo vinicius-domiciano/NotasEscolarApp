@@ -3,7 +3,9 @@ package br.com.myApp.MyApp.model.converters;
 import br.com.myApp.MyApp.model.Aluno;
 import br.com.myApp.MyApp.model.dto.aluno.AlunoIdentifyDTO;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
+@Component
 public class AlunoIdentifyConverter implements Converter<AlunoIdentifyDTO, Aluno> {
 
     @Override

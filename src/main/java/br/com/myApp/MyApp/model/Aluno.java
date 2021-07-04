@@ -7,10 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 import org.hibernate.annotations.Type;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -27,12 +24,13 @@ public class Aluno {
 		this.nome = nome;
 	}
 
-	public Aluno(UUID idAluno, @NotNull String nome, @NotNull String ra, @NotNull String senha, SerieEnum serie) {
+	public Aluno(UUID idAluno, @NotNull String nome, @NotNull String ra, @NotNull String senha, SerieEnum serie, Date dataNascimento) {
 		this.idAluno = idAluno;
 		this.nome = nome;
 		this.ra = ra;
 		this.senha = senha;
 		this.serie = serie;
+		this.dataNascimento = dataNascimento;
 	}
 
 	@Id
@@ -52,6 +50,9 @@ public class Aluno {
 
 	@NotNull
 	private String senha;
+
+	@Column(name = "data_nascimento")
+	private Date dataNascimento;
 
 	@Enumerated(EnumType.ORDINAL)
 	private SerieEnum serie;
@@ -123,6 +124,14 @@ public class Aluno {
 
 	public Turma getTurma() {
 		return turma;
+	}
+
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
 	}
 
 	/*

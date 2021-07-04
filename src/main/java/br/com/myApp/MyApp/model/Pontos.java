@@ -20,6 +20,13 @@ public class Pontos {
 		this.pontuacao = pontuacao;
 	}
 
+	public Pontos(UUID idPonto, @NotNull double pontuacao, @NotNull Notas nota, @NotNull Diciplina diciplina) {
+		this.idPonto = idPonto;
+		this.pontuacao = pontuacao;
+		this.nota = nota;
+		this.diciplina = diciplina;
+	}
+
 	@Id
 	@GeneratedValue(generator = "uuid4")
 	@GenericGenerator(name = "UUID", strategy = "uuid4")

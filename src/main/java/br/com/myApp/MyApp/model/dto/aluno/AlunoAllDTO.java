@@ -6,6 +6,7 @@ import br.com.myApp.MyApp.model.dto.turma.TurmaDefaultDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class AlunoAllDTO extends AlunoDefaultDTO{
 
@@ -17,8 +18,11 @@ public class AlunoAllDTO extends AlunoDefaultDTO{
         this.setNome(aluno.getNome());
         this.setRa(aluno.getRa());
         this.setSenha(aluno.getSenha());
+        this.setSerie(aluno.getSerie());
+        this.setDataNascimento(aluno.getDataNascimento());
         this.notas = NotasDefaultDTO.convertNotasToDTO(aluno.getNotas());
-        this.turma = new TurmaDefaultDTO(aluno.getTurma());
+        if (Boolean.FALSE.equals(Objects.isNull(aluno.getTurma())))
+            this.turma = new TurmaDefaultDTO(aluno.getTurma());
     }
 
     private List<NotasDefaultDTO> notas = new ArrayList<>();

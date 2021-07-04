@@ -3,6 +3,7 @@ package br.com.myApp.MyApp.model.dto.turma;
 import br.com.myApp.MyApp.model.Turma;
 import br.com.myApp.MyApp.model.enumerations.TurmaEnum;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -17,6 +18,7 @@ public class TurmaIdentifyDTO {
         this.turma = turma.getTurma();
     }
 
+    @NotNull(message = "É necessario passar o id da turma")
     private UUID idTurma;
     private TurmaEnum turma;
 

@@ -10,9 +10,9 @@
 	</parent>
 	<groupId>br.com.myApp</groupId>
 	<artifactId>MyApp</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
-	<name>MyApp</name>
-	<description>Demo project for Spring Boot</description>
+	<version>0.0.2-SNAPSHOT</version>
+	<name>NotasEscolarApp</name>
+	<description>Criando aplição de notas escolar</description>
 
 	<properties>
 		<java.version>11</java.version>
