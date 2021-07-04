@@ -7,10 +7,12 @@ import br.com.myApp.MyApp.model.converters.MateriaConverter;
 import br.com.myApp.MyApp.model.dto.materia.MateriaDefaultDTO;
 import br.com.myApp.MyApp.repository.MateriaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.UUID;
 
+@Service
 public class MateriaService extends BaseService<MateriaRepository, Materia, MateriaDefaultDTO>{
 
     private final MateriaConverter converter;

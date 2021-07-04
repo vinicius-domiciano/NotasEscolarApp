@@ -12,10 +12,12 @@ import br.com.myApp.MyApp.model.dto.notas.NotasDefaultDTO;
 import br.com.myApp.MyApp.model.enumerations.BimestreEnum;
 import br.com.myApp.MyApp.repository.NotasRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.Objects;
 import java.util.UUID;
 
+@Service
 public class NotasService extends BaseService<NotasRepository, Notas, NotasDefaultDTO>{
 
     private final NotasConverter converter;
