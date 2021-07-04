@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/escola/professores", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { "*/*" })
+@RequestMapping(path = "/escola/professores", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.ALL_VALUE })
 public class ProfessorResource {
 
     private final ProfessorService professorService;

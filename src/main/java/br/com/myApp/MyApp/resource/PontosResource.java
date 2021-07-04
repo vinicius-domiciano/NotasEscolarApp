@@ -13,6 +13,7 @@ import br.com.myApp.MyApp.repository.DiciplinaRepository;
 import br.com.myApp.MyApp.repository.NotasRepository;
 import br.com.myApp.MyApp.repository.PontosRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/escola/pontos")
+@RequestMapping(path = "/escola/pontos", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.ALL_VALUE })
 public class PontosResource {
 
     private final PontosRepository pontosRepository;

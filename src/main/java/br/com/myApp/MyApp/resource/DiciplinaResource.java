@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/escola/diciplinas", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { "*/*" })
+@RequestMapping(path = "/escola/diciplinas", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.ALL_VALUE })
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DiciplinaResource {
 

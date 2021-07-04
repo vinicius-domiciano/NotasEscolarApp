@@ -10,6 +10,7 @@ import br.com.myApp.MyApp.model.enumerations.SerieEnum;
 import br.com.myApp.MyApp.model.enumerations.TurmaEnum;
 import br.com.myApp.MyApp.repository.TurmaRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/escola/turmas")
+@RequestMapping(path = "/escola/turmas", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.ALL_VALUE })
 public class TurmaResource {
 
     private final TurmaRepository turmaRepository;

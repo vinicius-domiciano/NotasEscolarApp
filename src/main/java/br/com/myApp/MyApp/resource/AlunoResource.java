@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @RestController
-@RequestMapping(path = "/escola/alunos", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { "*/*" })
+@RequestMapping(path = "/escola/alunos", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.ALL_VALUE })
 public class AlunoResource {
 
 	private final AlunoService alunoService;

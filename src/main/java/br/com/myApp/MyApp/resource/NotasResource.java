@@ -12,6 +12,7 @@ import br.com.myApp.MyApp.model.dto.notas.NotasDefaultDTO;
 import br.com.myApp.MyApp.repository.AlunoRepository;
 import br.com.myApp.MyApp.repository.NotasRepository;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,7 +21,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/escola/notas")
+@RequestMapping(path = "/escola/notas", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { MediaType.ALL_VALUE })
 public class NotasResource {
 
     private final NotasRepository notasRepository;
