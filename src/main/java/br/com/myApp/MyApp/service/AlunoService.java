@@ -49,9 +49,6 @@ public class AlunoService extends BaseService<AlunoRepository, Aluno, AlunoDefau
     }
 
     public void deleteAluno(UUID id) {
-        if (Objects.isNull(id) || id.toString().isEmpty())
-            throw new BadRequestException("Necessario enviar o id correto");
-
         this.findAlunoById(id);
         this.deleteById(id);
     }

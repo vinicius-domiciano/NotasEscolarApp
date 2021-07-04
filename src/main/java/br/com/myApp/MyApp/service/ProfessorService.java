@@ -50,9 +50,6 @@ public class ProfessorService extends BaseService<ProfessorRepository, Professor
     }
 
     public void deleteProfessor(UUID id) {
-        if (Objects.isNull(id) || id.toString().isEmpty())
-            throw new BadRequestException("Necessario enviar o id");
-
         this.findProfessorById(id);
         this.deleteById(id);
     }

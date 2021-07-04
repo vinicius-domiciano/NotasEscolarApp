@@ -69,9 +69,6 @@ public class NotasService extends BaseService<NotasRepository, Notas, NotasDefau
     }
 
     public void deleteNota(UUID id) {
-        if (Objects.isNull(id) || id.toString().isEmpty())
-            throw new BadRequestException("Ops. É necessario enviar o id da nota");
-
         this.findNotasById(id);
         this.deleteById(id);
     }

@@ -46,9 +46,6 @@ public class MateriaService extends BaseService<MateriaRepository, Materia, Mate
     }
 
     public void deleteMateria(UUID id) {
-        if (Objects.isNull(id) || id.toString().isEmpty())
-            throw new BadRequestException("O id é necessario!");
-
         this.findMateriaById(id);
         this.deleteById(id);
     }
