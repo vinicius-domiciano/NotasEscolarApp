@@ -1,5 +1,6 @@
 package br.com.myApp.MyApp.resource;
 
+import br.com.myApp.MyApp.exceptions.BadRequestException;
 import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Aluno;
 import br.com.myApp.MyApp.model.Notas;
@@ -19,7 +20,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/escola/notas", headers = "Accept=application/json")
+@RequestMapping(path = "/escola/notas")
 public class NotasResource {
 
     private final NotasRepository notasRepository;
@@ -43,8 +44,7 @@ public class NotasResource {
     @PostMapping("")
     public ResponseEntity<?> adicionarNota(@RequestBody @Valid NotasDefaultDTO notasDefaultDTO) {
         if (notasDefaultDTO.getAlunoIdentify().getIdAluno() == null)
-            return new ResponseEntity<>("{\"Error\":\"Ops. É necessario enviar o id do aluno\"}",
-                    HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Ops. É necessario enviar o id do aluno");
 
         UUID idAluno = notasDefaultDTO.getAlunoIdentify().getIdAluno();
         Aluno aluno = alunoRepository.findById(idAluno).orElse(null);
@@ -58,8 +58,7 @@ public class NotasResource {
                     new AlunoIdentifyConverter().convert(notasDefaultDTO.getAlunoIdentify()));
 
         if (notaOptional.isPresent())
-            return new ResponseEntity<>("{\"Error\":\"Ops. A nota para esse aluno ja existe\"}",
-                    HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Ops. A nota para esse aluno ja existe");
 
         notasDefaultDTO.setAlunoIdentify(new AlunoIdentifyDTO(aluno));
         Notas notaConverted = new NotasConverter().convert(notasDefaultDTO);

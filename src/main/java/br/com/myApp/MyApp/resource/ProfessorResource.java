@@ -21,7 +21,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/escola/professores", headers = "Accept=application/json")
+@RequestMapping(path = "/escola/professores")
 public class ProfessorResource {
 
     private final ProfessorRepository professorRepository;

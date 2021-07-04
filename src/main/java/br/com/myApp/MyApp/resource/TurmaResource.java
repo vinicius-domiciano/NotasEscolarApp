@@ -21,7 +21,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/escola/turmas", headers = "Accept=application/json")
+@RequestMapping(path = "/escola/turmas")
 public class TurmaResource {
 
     private final TurmaRepository turmaRepository;

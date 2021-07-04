@@ -1,5 +1,6 @@
 package br.com.myApp.MyApp.resource;
 
+import br.com.myApp.MyApp.exceptions.BadRequestException;
 import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Diciplina;
 import br.com.myApp.MyApp.model.Materia;
@@ -24,7 +25,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping(path = "/escola/diciplinas", headers = "Accept=application/json")
+@RequestMapping(path = "/escola/diciplinas")
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DiciplinaResource {
 
@@ -42,11 +43,9 @@ public class DiciplinaResource {
         UUID idMateria = requestBody.getMateria().getIdMateria();
 
         if (idMateria == null || idMateria.toString().isEmpty())
-            return new ResponseEntity<>("{\"erro\":\"é necessario informar o id da materia\"}",
-                HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Ops, é necessario informar o id da materia");
         else if (idProfessor == null || idProfessor.toString().isEmpty())
-            return new ResponseEntity<>("{\"erro\":\"é necessario informar o id do professor\"}",
-                    HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Ops, é necessario informar o id do professor");
 
         Diciplina diciplinaConverted = new DiciplinaConverter().convert(requestBody);
         diciplinaConverted.setProfessor(

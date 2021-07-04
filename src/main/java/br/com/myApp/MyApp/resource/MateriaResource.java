@@ -25,7 +25,7 @@ import br.com.myApp.MyApp.model.Materia;
 import br.com.myApp.MyApp.repository.MateriaRepository;
 
 @RestController
-@RequestMapping("/escola/materias")
+@RequestMapping(path = "/escola/materias")
 public class MateriaResource {
 
 	@Autowired

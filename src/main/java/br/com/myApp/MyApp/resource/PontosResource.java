@@ -1,5 +1,6 @@
 package br.com.myApp.MyApp.resource;
 
+import br.com.myApp.MyApp.exceptions.BadRequestException;
 import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Diciplina;
 import br.com.myApp.MyApp.model.Notas;
@@ -19,7 +20,7 @@ import javax.validation.Valid;
 import java.util.UUID;
 
 @RestController
-@RequestMapping(path = "/escola/pontos", headers = "Accept=application/json")
+@RequestMapping(path = "/escola/pontos")
 public class PontosResource {
 
     private final PontosRepository pontosRepository;
@@ -35,11 +36,9 @@ public class PontosResource {
     @PostMapping("")
     public ResponseEntity<?> addPontos (@RequestBody @Valid PontosDefaultDTO ponto) {
         if (ponto.getNotaIdentify().getIdNota() == null)
-            return new ResponseEntity<>("{\"erro\":\"Ops, é necessario enviar o id da nota\"}",
-                    HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Ops, é necessario enviar o id da nota");
         else if (ponto.getDiciplinaIdentify().getIdDiciplina() == null)
-            return new ResponseEntity<>("{\"erro\":\"Ops, é necessario enviar o id da diciplina\"}",
-                    HttpStatus.BAD_REQUEST);
+            throw new BadRequestException("Ops, é necessario enviar o id da diciplina");
 
         UUID idNota = ponto.getNotaIdentify().getIdNota();
         UUID idDiciplina = ponto.getDiciplinaIdentify().getIdDiciplina();
@@ -63,10 +62,7 @@ public class PontosResource {
     @GetMapping("/{idPonto}")
     public ResponseEntity<?> searchPonto(@PathVariable UUID idPonto) {
         if (idPonto == null || idPonto.toString().isEmpty())
-            return new ResponseEntity<>(
-                    "{\"erro\":\"Ops, Não foi possivel indentificar id informado\"}",
-                    HttpStatus.BAD_REQUEST
-            );
+            throw new BadRequestException("Ops, Não foi possivel indentificar id informado");
 
         Pontos ponto = pontosRepository.findById(idPonto).orElse(null);
 
