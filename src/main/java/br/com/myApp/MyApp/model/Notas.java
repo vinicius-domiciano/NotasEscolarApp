@@ -23,6 +23,10 @@ public class Notas {
 	public Notas() {
 	}
 
+	public Notas(UUID idNota) {
+		this.idNota = idNota;
+	}
+
 	public Notas(UUID idNota, int ano, @NotNull BimestreEnum bimestre, @NotNull Aluno aluno) {
 		this.idNota = idNota;
 		this.ano = ano;
