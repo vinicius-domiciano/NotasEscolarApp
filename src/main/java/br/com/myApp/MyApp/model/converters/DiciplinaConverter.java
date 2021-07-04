@@ -5,7 +5,9 @@ import br.com.myApp.MyApp.model.Professor;
 import br.com.myApp.MyApp.model.dto.diciplina.DiciplinaDefaultDTO;
 import br.com.myApp.MyApp.model.dto.professor.ProfessorIdentifyDTO;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.stereotype.Component;
 
+@Component
 public class DiciplinaConverter implements Converter<DiciplinaDefaultDTO, Diciplina> {
 
 
