@@ -46,7 +46,7 @@ public class Turma {
     public Turma() {
     }
 
-    public Turma(UUID idTurma, @NotNull TurmaEnum turma) {
+    public Turma(UUID idTurma, TurmaEnum turma) {
         this.idTurma = idTurma;
         this.turma = turma;
     }

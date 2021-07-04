@@ -6,6 +6,7 @@ import br.com.myApp.MyApp.model.dto.pontos.PontosDefaultDTO;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class NotasAllDTO extends NotasDefaultDTO{
 
@@ -21,7 +22,10 @@ public class NotasAllDTO extends NotasDefaultDTO{
         this.setIdNota(nota.getIdNota());
         this.setAno(nota.getAno());
         this.setBimestre(nota.getBimestre());
-        this.aluno = new AlunoDefaultDTO(nota.getAluno());
+
+        if (Objects.nonNull(nota.getAluno()))
+            this.aluno = new AlunoDefaultDTO(nota.getAluno());
+
         this.pontos = PontosDefaultDTO.convertPontosToDTO(nota.getPontos());
     }
 

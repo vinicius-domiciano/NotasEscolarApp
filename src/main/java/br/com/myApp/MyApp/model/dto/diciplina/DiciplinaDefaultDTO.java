@@ -23,7 +23,6 @@ public class DiciplinaDefaultDTO {
     @NotNull(message = "é necessario passar o professor")
     private ProfessorIdentifyDTO professorIdentify;
 
-    @NotNull(message = "é necessario passar a turma")
     private List<TurmaIdentifyDTO> turmasIdentify;
 
     public DiciplinaDefaultDTO() {
