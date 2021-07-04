@@ -5,7 +5,6 @@ import java.util.UUID;
 
 import br.com.myApp.MyApp.model.dto.aluno.AlunoAllDTO;
 import br.com.myApp.MyApp.model.dto.aluno.AlunoDefaultDTO;
-import br.com.myApp.MyApp.repository.TurmaRepository;
 import br.com.myApp.MyApp.service.AlunoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -19,11 +18,12 @@ import javax.validation.Valid;
 @RequestMapping(path = "/escola/alunos", produces = { MediaType.APPLICATION_JSON_VALUE }, consumes = { "*/*" })
 public class AlunoResource {
 
-	@Autowired
-	private TurmaRepository turmaRepository;
+	private final AlunoService alunoService;
 
 	@Autowired
-	private AlunoService alunoService;
+	public AlunoResource(AlunoService alunoService) {
+		this.alunoService = alunoService;
+	}
 
 	// Listando todos os alunos
 	@GetMapping

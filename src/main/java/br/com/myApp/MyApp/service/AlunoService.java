@@ -24,6 +24,7 @@ public class AlunoService extends BaseService<AlunoRepository, Aluno, AlunoDefau
         this.converter = converter;
     }
 
+    //TODO Validar se tem id, para remover
     public AlunoDefaultDTO saveAluno(AlunoDefaultDTO alunoDefaultDTO) {
         var aluno = this.converter.convert(alunoDefaultDTO);
         return this.save(aluno);
@@ -38,7 +39,7 @@ public class AlunoService extends BaseService<AlunoRepository, Aluno, AlunoDefau
     
     public AlunoDefaultDTO updateAluno(AlunoDefaultDTO alunoDefaultDTO) {
         var aluno = this.converter.convert(alunoDefaultDTO);
-        
+
         if (Objects.isNull(alunoDefaultDTO.getIdAluno()) || alunoDefaultDTO.getIdAluno().toString().isEmpty())
             throw new BadRequestException("Necessario enviar o id");
 
