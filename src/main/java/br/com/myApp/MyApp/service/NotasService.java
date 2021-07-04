@@ -59,7 +59,7 @@ public class NotasService extends BaseService<NotasRepository, Notas, NotasDefau
         );
 
         if (Objects.nonNull(notaDTO.getIdNota()))
-            throw new BadRequestException("Ops. A notaDTO para esse aluno ja existe");
+            throw new BadRequestException("Ops. A nota para esse aluno ja existe");
         else if (Objects.isNull(aluno))
             throw new BadRequestException("Erro, aluno não encontrado");
 
