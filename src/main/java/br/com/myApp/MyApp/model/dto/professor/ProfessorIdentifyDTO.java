@@ -2,6 +2,7 @@ package br.com.myApp.MyApp.model.dto.professor;
 
 import br.com.myApp.MyApp.model.Professor;
 
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 public class ProfessorIdentifyDTO {
@@ -14,6 +15,7 @@ public class ProfessorIdentifyDTO {
         this.nome = professor.getNome();
     }
 
+    @NotNull(message = "É necessario passar o id do professor")
     private UUID idProfessor;
     private String nome;
 
