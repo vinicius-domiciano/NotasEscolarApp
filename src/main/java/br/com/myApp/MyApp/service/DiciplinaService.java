@@ -5,6 +5,7 @@ import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Diciplina;
 import br.com.myApp.MyApp.model.Materia;
 import br.com.myApp.MyApp.model.Professor;
+import br.com.myApp.MyApp.model.Turma;
 import br.com.myApp.MyApp.model.converters.DiciplinaConverter;
 import br.com.myApp.MyApp.model.dto.diciplina.DiciplinaAllDTO;
 import br.com.myApp.MyApp.model.dto.diciplina.DiciplinaDefaultDTO;
@@ -12,6 +13,7 @@ import br.com.myApp.MyApp.repository.DiciplinaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -21,13 +23,15 @@ public class DiciplinaService extends BaseService<DiciplinaRepository, Diciplina
     private final DiciplinaConverter converter;
     private final MateriaService materiaService;
     private final ProfessorService professorService;
+    private final TurmaService turmaService;
 
     @Autowired
-    public DiciplinaService(DiciplinaRepository diciplinaRepository, DiciplinaConverter converter, MateriaService materiaService, ProfessorService professorService) {
+    public DiciplinaService(DiciplinaRepository diciplinaRepository, DiciplinaConverter converter, MateriaService materiaService, ProfessorService professorService, TurmaService turmaService) {
         super(diciplinaRepository);
         this.converter = converter;
         this.materiaService = materiaService;
         this.professorService = professorService;
+        this.turmaService = turmaService;
     }
 
     public DiciplinaAllDTO findDiciplinaById(UUID id) {
@@ -45,6 +49,7 @@ public class DiciplinaService extends BaseService<DiciplinaRepository, Diciplina
 
         this.existProfessor(diciplina.getProfessor());
         this.existMateria(diciplina.getMateria());
+        this.existsTurmas(diciplina.getTurmas());
 
         return this.save(diciplina);
     }
@@ -60,6 +65,7 @@ public class DiciplinaService extends BaseService<DiciplinaRepository, Diciplina
         this.findDiciplinaById(diciplina.getIdDiciplina());
         this.existProfessor(diciplina.getProfessor());
         this.existMateria(diciplina.getMateria());
+        this.existsTurmas(diciplina.getTurmas());
 
         return this.save(diciplina);
     }
@@ -75,6 +81,12 @@ public class DiciplinaService extends BaseService<DiciplinaRepository, Diciplina
 
     private void existMateria(Materia materia) {
         this.materiaService.findMateriaById(materia.getIdMateria());
+    }
+
+    private void existsTurmas(List<Turma> turmas) {
+        for (Turma turma : turmas) {
+            this.turmaService.findTurmaById(turma.getIdTurma());
+        }
     }
 
 }
