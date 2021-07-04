@@ -5,7 +5,6 @@ import br.com.myApp.MyApp.exceptions.NotFoundException;
 import br.com.myApp.MyApp.model.Aluno;
 import br.com.myApp.MyApp.model.Notas;
 import br.com.myApp.MyApp.model.converters.AlunoConverter;
-import br.com.myApp.MyApp.model.converters.AlunoIdentifyConverter;
 import br.com.myApp.MyApp.model.converters.NotasConverter;
 import br.com.myApp.MyApp.model.dto.aluno.AlunoIdentifyDTO;
 import br.com.myApp.MyApp.model.dto.notas.NotasAllDTO;
